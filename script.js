@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Simpan ke localStorage
-      const userData = { username, email, password };
+      const userData = { username, email, password, joinDate: new Date().toISOString() };
       localStorage.setItem('jkt48_user_' + username, JSON.stringify(userData));
 
       showNotification('Daftar berhasil! Silakan login.', 'success');
@@ -352,6 +352,160 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Preset warna avatar
+const avatarPresets = [
+  ['#E4145C', '#F2994A'],
+  ['#7C5CFC', '#E4145C'],
+  ['#2DD4BF', '#7C5CFC'],
+  ['#F2994A', '#2DD4BF']
+];
+
+// Warna badge per team
+const teamBadgeColor = {
+  dream: { bg: '#FCE4EE', text: '#93123F', label: 'Fan team dream' },
+  love: { bg: '#FDE8E4', text: '#B5351D', label: 'Fan team love' },
+  passion: { bg: '#FFF1DA', text: '#A15A0A', label: 'Fan team passion' }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  const editProfileBtn = document.getElementById('editProfileBtn');
+  if (!editProfileBtn) return; // hanya jalan di profile.html
+
+  const oshiSelect = document.getElementById('oshiSelect');
+  const editProfileModal = document.getElementById('editProfileModal');
+  const closeEditProfileBtn = document.getElementById('closeEditProfileBtn');
+  const editProfileForm = document.querySelector('.edit-profile-form');
+  const bioInput = document.getElementById('bioInput');
+  const avatarColorPicker = document.getElementById('avatarColorPicker');
+
+  const currentUsername = localStorage.getItem('jkt48_user');
+  if (!currentUsername) return;
+
+  const userKey = 'jkt48_user_' + currentUsername;
+
+  function getUserData() {
+    const raw = localStorage.getItem(userKey);
+    return raw ? JSON.parse(raw) : {};
+  }
+
+  function saveUserData(data) {
+    localStorage.setItem(userKey, JSON.stringify(data));
+  }
+
+  // Isi dropdown oshim dari memberData
+  memberData.forEach(function (m) {
+    const opt = document.createElement('option');
+    opt.value = m.name;
+    opt.textContent = m.name + ' (Team ' + m.team.charAt(0).toUpperCase() + m.team.slice(1) + ')';
+    oshiSelect.appendChild(opt);
+  });
+
+  // Render swatch warna avatar
+  avatarPresets.forEach(function (colors, i) {
+    const swatch = document.createElement('div');
+    swatch.className = 'avatar-color-swatch';
+    swatch.style.background = 'linear-gradient(135deg, ' + colors[0] + ', ' + colors[1] + ')';
+    swatch.dataset.index = i;
+    swatch.addEventListener('click', function () {
+      document.querySelectorAll('.avatar-color-swatch').forEach(s => s.classList.remove('selected'));
+      swatch.classList.add('selected');
+    });
+    avatarColorPicker.appendChild(swatch);
+  });
+
+  function renderProfileExtras() {
+    const userData = getUserData();
+
+    const colorIndex = userData.avatarColorIndex || 0;
+    const avatarEl = document.getElementById('profileAvatar');
+    if (avatarEl) {
+      avatarEl.style.background = 'linear-gradient(135deg, ' + avatarPresets[colorIndex][0] + ', ' + avatarPresets[colorIndex][1] + ')';
+    }
+
+    const oshiBox = document.getElementById('oshiBox');
+    const oshiName = document.getElementById('oshiName');
+    const oshiPhoto = document.getElementById('oshiPhoto');
+    const profileBadge = document.getElementById('profileBadge');
+
+    if (userData.oshi) {
+      const member = memberData.find(m => m.name === userData.oshi);
+      if (member) {
+        oshiBox.style.display = 'flex';
+        oshiName.textContent = member.name + ' · Team ' + member.team.charAt(0).toUpperCase() + member.team.slice(1);
+        oshiPhoto.style.backgroundImage = 'url(' + member.photo + ')';
+
+        const badge = teamBadgeColor[member.team];
+        if (badge && profileBadge) {
+          profileBadge.textContent = badge.label;
+          profileBadge.style.background = badge.bg;
+          profileBadge.style.color = badge.text;
+        }
+      }
+    } else if (profileBadge) {
+      profileBadge.textContent = 'Fan JKT48';
+      profileBadge.style.background = '#FCE4EE';
+      profileBadge.style.color = '#93123F';
+    }
+
+    const profileBio = document.getElementById('profileBio');
+    if (profileBio) {
+      profileBio.textContent = userData.bio || 'Belum ada bio. Klik "Edit profil" buat nambahin!';
+    }
+
+    const statDays = document.getElementById('statDays');
+    const statYear = document.getElementById('statYear');
+    const statLevel = document.getElementById('statLevel');
+
+    if (userData.joinDate) {
+      const days = Math.floor((new Date() - new Date(userData.joinDate)) / (1000 * 60 * 60 * 24));
+      if (statDays) statDays.textContent = days;
+      if (statYear) statYear.textContent = new Date(userData.joinDate).getFullYear();
+      if (statLevel) statLevel.textContent = days > 180 ? '⭐⭐⭐' : days > 30 ? '⭐⭐' : '⭐';
+    }
+  }
+
+  renderProfileExtras();
+
+  editProfileBtn.addEventListener('click', function () {
+    const userData = getUserData();
+    oshiSelect.value = userData.oshi || '';
+    bioInput.value = userData.bio || '';
+
+    const swatches = document.querySelectorAll('.avatar-color-swatch');
+    swatches.forEach(s => s.classList.remove('selected'));
+    const idx = userData.avatarColorIndex || 0;
+    if (swatches[idx]) swatches[idx].classList.add('selected');
+
+    editProfileModal.classList.add('active');
+  });
+
+  closeEditProfileBtn.addEventListener('click', function () {
+    editProfileModal.classList.remove('active');
+  });
+
+  editProfileModal.addEventListener('click', function (e) {
+    if (e.target === editProfileModal) {
+      editProfileModal.classList.remove('active');
+    }
+  });
+
+  editProfileForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const selectedSwatch = document.querySelector('.avatar-color-swatch.selected');
+    const userData = getUserData();
+
+    userData.oshi = oshiSelect.value;
+    userData.bio = bioInput.value.trim();
+    userData.avatarColorIndex = selectedSwatch ? parseInt(selectedSwatch.dataset.index) : 0;
+
+    saveUserData(userData);
+    editProfileModal.classList.remove('active');
+    renderProfileExtras();
+    showNotification('Profil berhasil diperbarui!', 'success');
+  });
+});
+
 // HALAMAN JADWAL (jadwal.html)
 document.addEventListener('DOMContentLoaded', function () {
   const jadwalFrame = document.getElementById('jadwalFrame');
@@ -459,7 +613,7 @@ const beritaData = [
     title: "Jadwal Theater Minggu Ini",
     date: "2026-07-20",
     excerpt: "Info lengkap jadwal penampilan minggu ini di JKT48 Theater.",
-    content: "Jadwal show JKT48 Theater minggu ini sudah bisa dicek langsung di halaman Jadwal pada situs ini. Pastikan kamu memantau setlist dan waktu tayang tiap show, karena bisa berubah sewaktu-waktu mengikuti pengumuman resmi.\n\nSelalu update jadwal secara berkala supaya tidak ketinggalan show favoritmu."
+    content: "Jadwal show JKT48 Theater minggu ini sudah bisa dicek langsung di halaman <a href=\"jadwal.html\">Jadwal</a> pada situs ini. Pastikan kamu memantau setlist dan waktu tayang tiap show, karena bisa berubah sewaktu-waktu mengikuti pengumuman resmi.\n\nSelalu update jadwal secara berkala supaya tidak ketinggalan show favoritmu."
   },
   {
     slug: "mng-bulan-ini",
@@ -565,6 +719,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (memberGrid && searchInput && filterTeam && sortSelect) {
     const memberElements = Array.from(memberGrid.getElementsByClassName("member-link"));
+    const STORAGE_KEY = "jkt48_member_filter_state";
+
+    // PULIHKAN STATE
+    function restroeFilterState() {
+      const saved = sessionStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      
+      try {
+        const state = JSON.parse(saved);
+        if (state.search !== undefined) searchInput.value = state.search;
+        if (state.team !== undefined) filterTeam.value = state.team;
+        if (state.sort !== undefined) sortSelect.value = state.sort;
+      } catch (e) {
+        sessionStorage.removeItem(STORAGE_KEY);
+      }
+    }
+
+    // SIMPAN STATE SETIAP KALI BERUBAH
+    function saveFilterState() {
+      const state = {
+        search: searchInput.value,
+        team: filterTeam.value,
+        sort: sortSelect.value
+      };
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
 
     function updateMemberDisplay() {
       const searchTerm = searchInput.value.toLowerCase().trim();
@@ -603,12 +783,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       sortedElements.forEach(element => memberGrid.appendChild(element));
+
+      // simpan state tiap kali tampilan di update
+      saveFilterState();
     }
 
     searchInput.addEventListener("input", updateMemberDisplay);
     filterTeam.addEventListener("change", updateMemberDisplay);
     sortSelect.addEventListener("change", updateMemberDisplay);
 
+    // urutan penting: pulihkan sebelum render pertama
+    restroeFilterState();
     updateMemberDisplay();
   }
 });

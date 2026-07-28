@@ -37,26 +37,71 @@
         </div>
 
         <!-- ====== PROFIL AKUN ====== -->
-         <section class="account-profile-section">
+        <section class="account-profile-section">
             <div class="account-profile-card">
-                <div class="account-avatar" id="profileAvatar">U</div>
-                <h1 class="account-username" id="profileUsername">Username</h1>
-                <p class="account-email" id="profileEmail">email@contoh.com</p>
+                <div class="account-banner"></div>
 
-                <div class="account-info-list">
-                    <div class="account-info-row">
-                        <span>Status</span>
-                        <span>Fan JKT48</span>
+                <div class="account-body">
+                    <div class="account-avatar" id="profileAvatar">U</div>
+                    <h1 class="account-username" id="profileUsername">Username</h1>
+                    <p class="account-email" id="profileEmail">email@contoh.com</p>
+
+                    <span class="account-badge" id="profileBadge"></span>
+
+                    <div class="oshimen-box" id="oshimenBox" style="display:none;">
+                        <div class="oshimen-photo" id="oshimenPhoto"></div>
+                        <div>
+                            <p class="oshimen-label">Oshimen kamu</p>
+                            <p class="oshimen-name" id="oshimenName"></p>
+                        </div>
                     </div>
-                    <div class="account-info-row">
-                        <span>Bergabung sejak</span>
-                        <span>2026</span>
+
+                    <p class="account-bio" id="profileBio"></p>
+
+                    <div class="account-stats">
+                        <div class="stat-box">
+                            <p class="stat-value" id="statDays">-</p>
+                            <p class="stat-label">hari jadi fans</p>
+                        </div>
+                        <div class="stat-box">
+                            <p class="stat-value" id="statLevel">-</p>
+                            <p class="stat-label">level fans</p>
+                        </div>
+                        <div class="stat-box">
+                            <p class="stat-value" id="statYear">-</p>
+                            <p class="stat-label">bergabung</p>
+                        </div>
+                    </div>
+
+                    <div class="account-actions">
+                        <button type="button" id="editProfileBtn">Edit profil</button>
+                        <a href="#" class="account-logout-btn" id="profileLogoutBtn">Logout</a>
                     </div>
                 </div>
-
-                <a href="#" class="account-logout-btn" id="profileLogoutBtn">Logout</a>
             </div>
-         </section>
+        </section>
+
+        <div class="modal" id="editProfileModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeEditProfileBtn">&times;</span>
+                <h3>Edit profil</h3>
+
+                <form class="edit-profile-form">
+                    <label>Oshi</label>
+                    <select id="oshimenSelect">
+                        <option value="">Belum pilih Oshi</option>
+                    </select>
+
+                    <label>Bio singkat</label>
+                    <textarea id="bioInput" maxlength="80" placeholder="Tulis sesuatu tentang kamu..."></textarea>
+
+                    <label>Warna avatar</label>
+                    <div class="avatar-color-picker" id="avatarColorPicker"></div>
+
+                    <button type="submit">Simpan</button>
+                </form>
+            </div>
+        </div>
 
         <!-- ====== FOOTER ====== -->
         <footer class="footer">
