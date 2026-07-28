@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKT48 Fan Site</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="loader" id="loader">
+        <div class="loader-text">JKT48</div>
+    </div>
+
+    <!-- ====== NAVBAR ====== -->
+    <nav class="navbar">
+        <div class="logo">JKT48</div>
+        <ul class="nav-links">
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="member.html">Member</a></li>
+            <li><a href="jadwal.html">Jadwal</a></li>
+            <li><a href="berita.html">Berita</a></li>
+            <li><a href="tiket.html">Tiket</a></li>
+        </ul>
+        
+        <a href="#" class="login-btn" id="loginBtn">Login</a>
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ====== HERO SECTION ====== -->
+    <section class="hero" id="beranda">
+        <div class="hero-blob hero-blob-1"></div>
+        <div class="hero-blob hero-blob-2"></div>
+        <div class="hero-blob hero-blob-3"></div>
+        <div class="hero-content">
+            <span class="hero-eyebrow">JAKARTA • SEJAK 2011</span>
+            <h1><span class="text-dream">Love</span> <span class="text-love">Dream</span> <span class="text-passion">Passion</span></h1>
+            <p>Idol group Indonesia yang penuh warna, semangat, dan cerita dari tiap membernya.</p>
+            <div class="hero-btns">
+                <a href="jadwal.html" class="btn-primary">Lihat Jadwal</a>
+                <a href="member.html" class="btn-outline">Kenali Member</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ULANG TAHUN BULAN INI ===== -->
+    <section class="birthday-section">
+        <h2 class="section-title">🎂 Ulang Tahun Member Bulan Ini <span id="birthdayMonthLabel"></span></h2>
+        <div class="birthday-grid" id="birthdayGrid"></div>
+        <p class="birthday-empty" id="birthdayEmpty">Belum ada member yang ulang tahun bulan ini.</p>
+    </section>
+
+    <!-- ====== BERITA BARU ====== -->
+    <section class="news-section" id="berita">
+        <h2 class="section-title">Berita Terbaru</h2>
+        <div class="news-grid" id="newsGrid"></div>
+        <div class="news-more">
+            <a href="berita.html" class="btn-outline">Lihat Semua Berita</a>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">JKT48</div>
+                <p>Idol group pertama di Indonesia.<br>Jakarta, Since 2011.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="#beranda">Beranda</a></li>
+                    <li><a href="member.html">Member</a></li>
+                    <li><a href="#berita">Berita</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Ikuti Kami</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/jkt48/" target="_blank">Instragram</a></li>
+                    <li><a href="https://x.com/officialJKT48" target="_blank">X</a></li>
+                    <li><a href="https://www.youtube.com/@JKT48" target="_blank">YouTube</a></li>
+                    <li><a href="https://www.tiktok.com/@jkt48.official" target="_blank">TikTok</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 JKT48 Fan Site • Dibuat oleh Karyn Devina 🎶</p>
+        </div>
+    </footer>
+
+/* ====== LOGIN MODAL ====== */
+<div class="login-modal" id="loginModal">
+    <div class="login-box">
+        <span class="close-btn" id="closeBtn">&times;</span>
+        <h2>Login</h2>
+        <p>Masuk ke akun JKT48 kamu</p>
+
+        <form class="login-form">
+            <input type="text" id="loginUsername" placeholder="Username" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                        <span class="toggle-password">🔒</span>
+                    </div>
+            <button type="submit">Masuk</button>
+        </form>
+
+        <div class="login-links">
+            <a href="#">Lupa Password?</a>
+            <a herf="#" id="toSignupFromLogin">Belum punya akun? Daftar</a>
+        </div>
+    </div>
+</div>
+
+/* ====== SIGNUP MODAL ====== */
+<div class="signup-modal" id="signupModal">
+    <div class="signup-box">
+        <span class="close-signup-btn" id="closeSignupBtn">&times;</span>
+        <h2>Daftar</h2>
+        <p>Buat akun JKT48 baru</p>
+
+        <form class="signup-form">
+            <input type="text" id="signupUsername" placeholder="Username" required>
+            <input type="email" id="signupEmail" placeholder="Email" required>
+            <div class="password-wrapper">
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <span class="toggle-password">🔒</span>
+            </div>
+            <div class="password-wrapper">
+                <input type="password" id="signupConfirmPassword" placeholder="Konfirmasi Password" required>
+                <span class="toggle-password">🔒</span>
+            </div>
+            <button type="submit">Daftar</button>
+        </form>
+
+        <div class="signup-links">
+            <p>Sudah punya akun? <a href="#" id="toLoginLink">Login</a></p>
+        </div>
+    </div>
+</div>
+
+/* CUSTOM NOTIFIKASI */
+<div class="notification" id="notification">
+    <span class="notif-icon">✓</span>
+    <span class="notif-message" id="notifMessage">Berhasil!</span>
+</div>
+
+     <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tiket - JKT48 Fan Site</title>
+        <link rel="icon" type="image/jpeg" href="logo.jpg">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="loader" id="loader">
+            <div class="loader-text">JKT48</div>
+        </div>
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="logo">JKT48</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="member.html">Member</a></li>
+                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="berita.html">Berita</a></li>
+                <li><a href="tiket.html" class="active">Tiket</a></li>
+            </ul>
+
+            <a href="#" class="login-btn" id="loginBtn">Login</a>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+
+        <!-- LOGIN MODAL -->
+        <div class="login-modal" id="loginModal">
+            <div class="login-box">
+                <span class="close-btn" id="closeBtn">&times;</span>
+                <h2>Login</h2>
+                <p>Masuk ke akun JKT48 kamu</p>
+
+                <form class="login-form">
+                    <input type="text" id="loginUsername" placeholder="Username" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                        <span class="toggle-password">🔒</span>
+                    </div>
+                    <button type="submit">Masuk</button>
+                </form>
+
+                <div class="login-links">
+                    <a href="#">Lupa Password?</a>
+                    <a href="#" id="toSignupFromLogin">Belum punya akun? Daftar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIGNUP MODAL -->
+        <div class="signup-modal" id="signupModal">
+            <div class="signup-box">
+                <span class="close-signup-btn" id="closeSignupBtn">&times;</span>
+                <h2>Daftar</h2>
+                <p>Buat akun JKT48 baru</p>
+
+                <form class="singup-form">
+                    <input type="text" id="signupUsername" placeholder="Username" required>
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" placeholder="Password" required>
+                        <span class="toggle-password">🔒</span>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupConfirmPassword" placeholder="Konfirmasi Password" required>
+                        <span class="toggle-password">🔒</span>
+                    </div>
+
+                    <button type="submit">Daftar</button>
+                </form>
+
+                <div class="signup-links">
+                    <p>Sudah punya akun? <a href="#" id="toLoginLink">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification" id="notification">
+            <span class="notif-icon">✓</span>
+            <span class="notif-message" id="notifMessage">Berhasil</span>
+        </div>
+
+        <!-- TIKET SECTION -->
+        <section class="tiket-section">
+            <div class="tiket-header">
+                <h2 class="section-title">Tiket Theater</h2>
+                <p class="tiket-subtitle">
+                    Panduan singkat cara menonton show JKT48 theater secara langsung.
+                </p>
+            </div>
+
+            <div class="tiket-steps">
+                <div class="tiket-step">
+                <div class="tiket-step-number">1</div>
+                <div class="tiket-step-body">
+                    <h3>Pilih Jadwal Show</h3>
+                    <p>Cek show yang ingin ditonton di halaman <a href="jadwal.html">Jadwal</a>, lengkap dengan tanggal dan setlists yang tampil.</p>
+                </div>
+            </div>
+
+            <div class="tiket-step">
+                <div class="tiket-step-number">2</div>
+                <div class="tiket-step-body">
+                    <h3>Daftar / Login Akun My Page</h3>
+                    <p>Pembelian tiket dilakukan lewat akun My Page di situr resmi JKT48. Non-member tetap bisa ikut, member OFC (Official Fans Clun) punya kesempatan tambaha.</p>
+                </div>
+            </div>
+
+            <div class="tiket-step">
+                <div class="tiket-step-number">3</div>
+                <div class="tiket-step-body">
+                    <h3>Ikuti Undian & Bayar dengan JKT48 Point</h3>
+                    <p>Tiket show reguler dibagikan lewat sistem undian. Kalau menang, pembayaran dipotong dari JKT48 Point milikmu di My Page.</p>
+                </div>
+            </div>
+
+            <div class="tiket-step">
+                <div class="tiket-step-number">4</div>
+                <div class="tiket-step-body">
+                    <h3>tukar Tiket di Hari H</h3>
+                    <p>Tunjukkan barcode tiket di My Page beserta identitas yang terdaftar saat masuk ke theater.</p>
+                </div>
+            </div>
+            </div>
+
+            <div class="tiket-note">
+                <p>Harga tiket ditentukan dalam bentuk JKT48 Point dan bisa berbeda tiap jenis show. Untuk detail harga, syarat, dan jadwal pembelian terbaru, cek langsung di situs resmi JKT48.</p>
+            </div>
+
+            <div class="tiket-cta">
+                <a href="https://jkt48.com/how-to-purchase" target="_blank" rel="noopener" class="btn-primary">
+                    Beli Tiket di jkt48.com↗
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">JKT48</div>
+                    <p>Idol group pertama di Indonesia. <br>Jakarta, Since 2011.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="member.html">Member</a></li>
+                        <li><a href="jadwal.html">Jadwal</a></li>
+                        <li><a href="tiket.html">Tiket</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Ikuti Kami</h4>
+                    <ul>
+                        <li><a href="https://www.instagram.com/jkt48/" target="_blank">Instagram</a></li>
+                        <li><a href="https://x.com/officialJKT48" target="_blank">X</a></li>
+                        <li><a href="https://www.youtube.com/@JKT48" target="_blank">YouTube</a></li>
+                        <li><a href="https://www.tiktok.com/@jkt48.official?lang=id-ID" target="_blank">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 JKT48 Fan Site • Dibuat oleh Karyn Devina 🎶</p>
+            </div>
+        </footer>
+
+        <script src="script.js"></script>
+    </body>
+</html>
