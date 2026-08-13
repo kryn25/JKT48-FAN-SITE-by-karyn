@@ -12,14 +12,21 @@
 })();
 
 // Navbar mengecil dan border merah muncul saat scroll
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
+const navbarEl = document.querySelector('.navbar');
+let navbarScrollTicking = false;
 
+window.addEventListener('scroll', function() {
+  if (navbarScrollTicking) return;
+  navbarScrollTicking = true;
+
+  requestAnimationFrame(function () {
     if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
+      navbarEl.classList.add('scrolled');
     } else {
-        navbar.classList.remove('scrolled');
+      navbarEl.classList.remove('scrolled');
     }
+    navbarScrollTicking = false;
+  });
 });
 
 const cards = document.querySelectorAll('.news-card');
@@ -284,8 +291,13 @@ if (prevBtn && nextBtn) {
 // Active link saat scroll
 const sections = document.querySelectorAll('section[id]');
 const navItems = document.querySelectorAll('.nav-links a');
+let activeLinkTicking = false;
 
 window.addEventListener('scroll', function() {
+  if (activeLinkTicking) return;
+  activeLinkTicking = true;
+
+  requestAnimationFrame(function () {
   let current = '';
 
   sections.forEach(function(section) {
@@ -300,6 +312,9 @@ window.addEventListener('scroll', function() {
     if (link.getAttribute('href') === '#' + current) {
       link.classList.add('active');
     }
+  });
+
+  activeLinkTicking = false;
   });
 });
 
