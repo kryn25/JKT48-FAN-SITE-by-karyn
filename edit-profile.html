@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Edit Profil - JKT48</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    </head>
+
+    <body class="bg-cream text-navy font-body">
+        <div class="h-1 bg-navy font-body"></div>
+        <header class="bg-white border-b border-creamline sticky top-0 z-30">
+            <div class="max-w-7x1 mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
+                <div class="logo font-display font-800 text-xl tracking-wide">
+                    <span>J</span><span>K</span><span>T</span><span>4</span><span>8</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-8 text-xs font-bold tracking-widest text-navy/75">
+                    <a href="#" class="hover:text-pink transition">BERANDA</a>
+                    <a href="#" class="hover:text-pink transition">MEMBER</a>
+                    <a href="#" class="hover:text-pink transition">BERITA</a>
+                    <a href="#" class="hover:text-pink transition">TIKET</a>
+                </nav>
+                <a href="profile.html" class="text-sm font-bold text-white px-5 py-2.5 rounded-full bg-gradient-to-r from-pink to-orange">yichun</a>
+            </div>
+        </header>
+
+        <div class="max-w-7x1 mx-auti px-6 md:px-12 py-10">
+            <p class="text-xs font-bold text-gradient mb-1"><a href="profile.html" class="hover:text-pink">Profile</a> / <span class="text-navy">Edit Profil</span></p>
+            <h1 class="font-display font-800 text-3x1 text-navy">Edit Profil</h1>
+            <p class="text-graytext text-sm mt-1 mb-8">Sesuaikan identitas fan kamu - foto, oshi, bio, sampai privasi akun.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[340px_1fr] fap-8 items-start">
+                <div class="lg:sticky lg:top-24 space-y-4">
+                    <div id="fan-card" class="relative rounded-3x1 overflow-hidden shadow-card bg-navy text-white">
+                        <div class="card-serial absolute inset-0"></div>
+
+                        <div id="card-banner" class="h-28 bg-hover bg-center relative" style="background:linear-gradient(90deg,#17b3a3,#e8368f,#7b6cf2);">
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/0 to-navy/0"></div>
+                            <span class="absolute top-3 right-3 text-[10px] font-bold tracking-widest bg-white/15 backdrop-blur px-2 py-1 rounded-full">FAN-ID</span>
+                        </div>
+
+                        <div class="relative px-6 pb-6 -mt-10">
+                            <div id="card-avatar" class="w-20 h-20 rounded-full border-4 border-navy bg-pink flex items-center justify-center font-display font-800 text-2xl overflow-hidden">
+                                <span id="card-avatar-letter">Y</span>
+                                <img id="card-avatar-img" alt="" class="w-full h-full object-cover hidden">
+                            </div>
+
+                            <h3 id="card-name" class="font-displau font-700 text-lg mt-3">yichun</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

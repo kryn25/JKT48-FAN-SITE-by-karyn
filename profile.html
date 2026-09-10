@@ -51,7 +51,7 @@
                     <div class="oshimen-box" id="oshimenBox" style="display:none;">
                         <div class="oshimen-photo" id="oshimenPhoto"></div>
                         <div>
-                            <p class="oshimen-label">Oshimen kamu</p>
+                            <p class="oshimen-label">Oshi kamu</p>
                             <p class="oshimen-name" id="oshimenName"></p>
                         </div>
                     </div>
@@ -82,24 +82,66 @@
         </section>
 
         <div class="modal" id="editProfileModal">
-            <div class="modal-content">
-                <span class="close-btn" id="closeEditProfileBtn">&times;</span>
-                <h3>Edit profil</h3>
+            <div class="modal-content settings-modal">
+                <span class="close-btn" id="closeeditProfileBtn">&times;</span>
 
-                <form class="edit-profile-form">
-                    <label>Oshi</label>
-                    <select id="oshimenSelect">
-                        <option value="">Belum pilih Oshi</option>
-                    </select>
+                <div class="settings-layout">
+                    <div class="settings-sidebar">
+                        <button type="button" class="settings-tab-btn active" data-tab="profil">Profil</button>
+                        <button type="button" class="settings-tab-btn" data-tab="akun">Akun & Keamanan</button>
+                    </div>
 
-                    <label>Bio singkat</label>
-                    <textarea id="bioInput" maxlength="80" placeholder="Tulis sesuatu tentang kamu..."></textarea>
+                    <div class="settings-content">
+                        <!-- TAB PROFIL -->
+                        <div class="settings-panel active" data-panel="profil">
+                            <h3>Edit Profil</h3>
 
-                    <label>Warna avatar</label>
-                    <div class="avatar-color-picker" id="avatarColorPicker"></div>
+                            <label>Foto profil</label>
+                            <div class="avatar-upload-row">
+                                <div class="avatar-preview" id="avatarPreview">U</div>
+                                <div class="avatar-upload-actions">
+                                    <button type="button" id="uploadPhotoBtn" class="btn-small">Unggah foto</button>
+                                    <button type="button" id="removePhotoBtn" class="btn-small btn-small-outline">Hapus</button>
+                                    <input type="file" id="avatarFileInput" accept="image/*" hidden>
+                                </div>
+                            </div>
 
-                    <button type="submit">Simpan</button>
-                </form>
+                            <label>Atau pilih warna avatar</label>
+                            <div class="avatar-color-picker" id="avatarColorPicker"></div>
+
+                            <label>Oshi</label>
+                            <div class="oshi-search-wrapper">
+                                <input type="text" id="oshiSearchInput" placeholder="Ketik nama lengkap member..." autocomplete="off">
+                                <div class="oshi-suggestions" id="oshiSuggestions"></div>
+                            </div>
+                            <a href="#" class="oshi-selected-preview" id="oshiSelectedPreview" style="display: none;" target="_blank"></a>
+
+                            <label>Bio singkat</label>
+                            <textarea id="bioInput" maxlength="80" placeholder="Tulis sesuatu tentang kamu..."></textarea>
+
+                            <button type="button" id="saveProfileTabBtn" class="btn-save">Simpan perubahan</button>
+                        </div>
+
+                        <!-- TAB AKUN -->
+                        <div class="settings-panel" data-panel="akun">
+                            <h3>Akun & Keamanan</h3>
+
+                            <label>Email</label>
+                            <input type="email" id="accountEmailInput" placeholder="email@contoh.com">
+
+                            <label>Password Saat Ini</label>
+                            <input type="password" id="currentPasswordInput" placeholder="••••••••">
+
+                            <label>Password Baru</label>
+                            <input type="password" id="newPasswordInput" placeholder="Minimal 6 karakter">
+
+                            <label>Konfirmasi Password Baru</label>
+                            <input type="password" id="confirmPasswordInput" placeholder="Ulangi password baru">
+
+                            <button type="button" id="saveAccountTabBtn" class="btn-save">Simpan perubahan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

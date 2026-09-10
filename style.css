@@ -693,12 +693,12 @@ body {
     background-color: var(--abu);
     background-size: cover;
     background-position: top center;
-    filter: grayscale(30%);
-    transition: filter 0.3s;
+    transition: transform 0.3s, filter 0.3s;
 }
 
 .member-card:hover .member-img {
-    filter: grayscale(0%);
+    transform: scale(1.04);
+    filter: saturate(1.4) brightness(1.05);
 }
 
 .member-info {
@@ -1756,7 +1756,66 @@ h1, h2, h3, h4,
     color: var(--merah);
 }
 
-.edit-profile-form label {
+/* ====== SETTINGS MODAL (Edit Profil) — menggantikan .edit-profile-form lama
+   yang sudah tidak dipakai lagi karena markup-nya sudah diganti jadi
+   sidebar + tab (.settings-layout, .settings-panel, dst) ====== */
+.settings-modal {
+    max-width: 640px;
+}
+
+.settings-layout {
+    display: flex;
+    gap: 24px;
+}
+
+.settings-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 150px;
+    flex-shrink: 0;
+    border-right: 1px solid #333;
+    padding-right: 16px;
+}
+
+.settings-tab-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+}
+
+.settings-tab-btn:hover {
+    color: var(--putih);
+}
+
+.settings-tab-btn.active {
+    background: #252525;
+    color: var(--putih);
+    box-shadow: inset 3px 0 0 var(--merah);
+}
+
+.settings-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.settings-panel {
+    display: none;
+}
+
+.settings-panel.active {
+    display: block;
+}
+
+.settings-panel label {
     display: block;
     color: #888;
     font-size: 0.85rem;
@@ -1764,12 +1823,14 @@ h1, h2, h3, h4,
     margin-top: 16px;
 }
 
-.edit-profile-form label:first-child {
+.settings-panel label:first-of-type {
     margin-top: 0;
 }
 
-.edit-profile-form select,
-.edit-profile-form textarea {
+.settings-panel input[type="text"],
+.settings-panel input[type="email"],
+.settings-panel input[type="password"],
+.settings-panel textarea {
     width: 100%;
     padding: 14px 18px;
     background: #252525;
@@ -1781,18 +1842,18 @@ h1, h2, h3, h4,
     box-sizing: border-box;
 }
 
-.edit-profile-form textarea {
+.settings-panel textarea {
     resize: vertical;
     min-height: 70px;
 }
 
-.edit-profile-form select:focus,
-.edit-profile-form textarea:focus {
+.settings-panel input:focus,
+.settings-panel textarea:focus {
     outline: none;
     border-color: var(--merah);
 }
 
-.edit-profile-form button[type="submit"] {
+.btn-save {
     width: 100%;
     padding: 14px;
     background: var(--merah);
@@ -1803,4 +1864,162 @@ h1, h2, h3, h4,
     font-weight: 600;
     cursor: pointer;
     margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.btn-save:hover {
+    background: #ff5555;
+}
+
+/* ---- upload avatar di dalam modal ---- */
+.avatar-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.avatar-preview {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E4145C, #F2994A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--putih);
+    font-weight: 700;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.avatar-upload-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-small {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: var(--merah);
+    color: var(--putih);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-small:hover {
+    background: #ff5555;
+}
+
+.btn-small-outline {
+    background: transparent;
+    border: 1px solid #444;
+    color: #ccc;
+    display: none; /* ditampilkan lagi lewat JS begitu ada foto yang diupload */
+}
+
+.btn-small-outline:hover {
+    border-color: var(--merah);
+    color: var(--merah);
+}
+
+/* ---- pencarian & pemilihan oshi ---- */
+.oshi-search-wrapper {
+    position: relative;
+}
+
+.oshi-suggestions {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 5;
+}
+
+.oshi-suggestions.show {
+    display: block;
+}
+
+.oshi-suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+.oshi-suggestion-item:hover {
+    background: #2a2a2a;
+}
+
+.oshi-suggestion-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.oshi-suggestion-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--putih);
+    margin: 0;
+}
+
+.oshi-suggestion-team {
+    font-size: 0.72rem;
+    color: #888;
+    margin: 0;
+}
+
+.oshi-suggestion-empty {
+    padding: 14px;
+    font-size: 0.8rem;
+    color: #888;
+    text-align: center;
+}
+
+.oshi-selected-preview {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: #252525;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    color: var(--putih);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.oshi-selected-preview:hover {
+    border-color: var(--merah);
+}
+
+@media (max-width: 560px) {
+    .settings-layout {
+        flex-direction: column;
+    }
+    .settings-sidebar {
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding-right: 0;
+        padding-bottom: 12px;
+        overflow-x: auto;
+    }
 }
