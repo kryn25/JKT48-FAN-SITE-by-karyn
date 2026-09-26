@@ -3,57 +3,173 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Profil - JKT48</title>
-
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <title>Edit Profil - JKT48 Fan Site</title>
+        <link rel="icon" type="image/jpeg" href="logo.jpg">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
     </head>
+    <body>
+        <div class="loader" id="loader">
+            <div class="loader-text">JKT48</div>
+        </div>
 
-    <body class="bg-cream text-navy font-body">
-        <div class="h-1 bg-navy font-body"></div>
-        <header class="bg-white border-b border-creamline sticky top-0 z-30">
-            <div class="max-w-7x1 mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
-                <div class="logo font-display font-800 text-xl tracking-wide">
-                    <span>J</span><span>K</span><span>T</span><span>4</span><span>8</span>
-                </div>
-                <nav class="hidden md:flex items-center gap-8 text-xs font-bold tracking-widest text-navy/75">
-                    <a href="#" class="hover:text-pink transition">BERANDA</a>
-                    <a href="#" class="hover:text-pink transition">MEMBER</a>
-                    <a href="#" class="hover:text-pink transition">BERITA</a>
-                    <a href="#" class="hover:text-pink transition">TIKET</a>
-                </nav>
-                <a href="profile.html" class="text-sm font-bold text-white px-5 py-2.5 rounded-full bg-gradient-to-r from-pink to-orange">yichun</a>
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="logo">JKT48</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="member.html">Member</a></li>
+                <li><a href="berita.html">Berita</a></li>
+                <li><a href="tiket.html">Tiket</a></li>
+            </ul>
+
+            <a href="profile.html" class="login-btn">Kembali ke Profil</a>
+
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+
+        <div class="notification" id="notification">
+            <span class="notif-icon">✓</span>
+            <span class="notif-message" id="notifMessage">Berhasil!</span>
+        </div>
+
+        <!-- ====== HALAMAN EDIT PROFIL ====== -->
+        <section class="settings-page-section" id="editProfilePage">
+            <div class="settings-page-breadcrumb">
+                <a href="profile.html">Profil</a> / <span>Edit Profil</span>
             </div>
-        </header>
 
-        <div class="max-w-7x1 mx-auti px-6 md:px-12 py-10">
-            <p class="text-xs font-bold text-gradient mb-1"><a href="profile.html" class="hover:text-pink">Profile</a> / <span class="text-navy">Edit Profil</span></p>
-            <h1 class="font-display font-800 text-3x1 text-navy">Edit Profil</h1>
-            <p class="text-graytext text-sm mt-1 mb-8">Sesuaikan identitas fan kamu - foto, oshi, bio, sampai privasi akun.</p>
+            <div class="settings-page-card">
+                <div class="settings-layout">
+                    <div class="settings-sidebar">
+                        <p class="settings-sidebar-title">Pengaturan</p>
+                        <button type="button" class="settings-tab-btn active" data-tab="profil">
+                            <span class="settings-tab-icon">👤</span> Profil
+                        </button>
+                        <button type="button" class="settings-tab-btn" data-tab="akun">
+                            <span class="settings-tab-icon">🔒</span> Akun &amp; Keamanan
+                        </button>
+                    </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-[340px_1fr] fap-8 items-start">
-                <div class="lg:sticky lg:top-24 space-y-4">
-                    <div id="fan-card" class="relative rounded-3x1 overflow-hidden shadow-card bg-navy text-white">
-                        <div class="card-serial absolute inset-0"></div>
+                    <div class="settings-content">
+                        <!-- TAB PROFIL -->
+                        <div class="settings-panel active" data-panel="profil">
+                            <h3>Edit Profil</h3>
 
-                        <div id="card-banner" class="h-28 bg-hover bg-center relative" style="background:linear-gradient(90deg,#17b3a3,#e8368f,#7b6cf2);">
-
-                            <div class="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/0 to-navy/0"></div>
-                            <span class="absolute top-3 right-3 text-[10px] font-bold tracking-widest bg-white/15 backdrop-blur px-2 py-1 rounded-full">FAN-ID</span>
-                        </div>
-
-                        <div class="relative px-6 pb-6 -mt-10">
-                            <div id="card-avatar" class="w-20 h-20 rounded-full border-4 border-navy bg-pink flex items-center justify-center font-display font-800 text-2xl overflow-hidden">
-                                <span id="card-avatar-letter">Y</span>
-                                <img id="card-avatar-img" alt="" class="w-full h-full object-cover hidden">
+                            <div class="settings-profile-row">
+                                <div class="avatar-preview" id="avatarPreview">U</div>
+                                <div class="settings-profile-row-info">
+                                    <p class="settings-profile-row-name" id="settingsProfileName">username</p>
+                                    <p class="settings-profile-row-handle" id="settingsProfileHandle">@username</p>
+                                </div>
+                                <div class="avatar-upload-actions">
+                                    <button type="button" id="uploadPhotoBtn" class="btn-small">Ganti Foto</button>
+                                    <button type="button" id="removePhotoBtn" class="btn-small btn-small-outline">Hapus</button>
+                                    <input type="file" id="avatarFileInput" accept="image/*" hidden>
+                                </div>
                             </div>
 
-                            <h3 id="card-name" class="font-displau font-700 text-lg mt-3">yichun</h3>
+                            <label>Atau pilih warna avatar</label>
+                            <div class="avatar-color-picker" id="avatarColorPicker"></div>
+
+                            <label>Nickname</label>
+                            <input type="text" id="nicknameInput" maxlength="20" placeholder="Nickname (opsional)">
+
+                            <label>Oshi</label>
+                            <div class="oshi-search-wrapper">
+                                <input type="text" id="oshiSearchInput" placeholder="Ketik nama panggilan member..." autocomplete="off">
+                                <div class="oshi-suggestions" id="oshiSuggestions"></div>
+                            </div>
+                            <a href="#" class="oshi-selected-preview" id="oshiSelectedPreview" style="display: none;"></a>
+
+                            <div class="settings-label-row">
+                                <label>Bio singkat</label>
+                                <span class="settings-char-count" id="bioCount">0/80</span>
+                            </div>
+                            <textarea id="bioInput" maxlength="80" placeholder="Tulis sesuatu tentang kamu..."></textarea>
+
+                            <div class="settings-page-actions">
+                                <a href="profile.html" class="btn-cancel-link">Batal</a>
+                                <button type="button" id="saveProfileTabBtn" class="btn-save">Simpan perubahan</button>
+                            </div>
+                        </div>
+
+                        <!-- TAB AKUN -->
+                        <div class="settings-panel" data-panel="akun">
+                            <h3>Akun & Keamanan</h3>
+
+                            <label>Email</label>
+                            <input type="email" id="accountEmailInput" placeholder="email@contoh.com">
+
+                            <label>Password Saat Ini</label>
+                            <input type="password" id="currentPasswordInput" placeholder="••••••••">
+
+                            <label>Password Baru</label>
+                            <input type="password" id="newPasswordInput" placeholder="Minimal 6 karakter">
+
+                            <label>Konfirmasi Password Baru</label>
+                            <input type="password" id="confirmPasswordInput" placeholder="Ulangi password baru">
+
+                            <div class="settings-page-actions">
+                                <a href="profile.html" class="btn-cancel-link">Batal</a>
+                                <button type="button" id="saveAccountTabBtn" class="btn-save">Simpan perubahan</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- ====== FOOTER ====== -->
+        <footer class="footer">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">JKT48</div>
+                    <p>Idol group pertama di Indonesia.<br>Jakarta, Since 2011.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="member.html">Member</a></li>
+                        <li><a href="jadwal.html">Jadwal</a></li>
+                        <li><a href="berita.html">Berita</a></li>
+                        <li><a href="tiket.html">Tiket</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Ikuti Kami</h4>
+                    <ul>
+                        <li><a href="https://www.instagram.com/jkt48/" target="_blank">Instagram</a></li>
+                        <li><a href="https://x.com/officialJKT48" target="_blank">X</a></li>
+                        <li><a href="https://www.youtube.com/@JKT48" target="_blank">YouTube</a></li>
+                        <li><a href="https://www.tiktok.com/@jkt48.official?lang=id-ID" target="_blank">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 JKT48 Fan Site • Dibuat oleh Karyn Devina 🎶</p>
+            </div>
+        </footer>
+
+        <div class="crop-modal" id="cropModal">
+            <div class="crop-modal-box">
+                <p class="crop-modal-title">Sesuaikan Foto Profil</p>
+                <div class="crop-image-wrapper">
+                    <img id="cropImage" src="">
+                </div>
+                <div class="crop-modal-actions">
+                    <button type="button" id="cropCancelBtn" class="btn-small btn-small-outline" style="display: inline-block;">Batal</button>
+                    <button type="button" id="cropConfirmBtn" class="btn-small">Pakai Foto</button>
+                </div> 
+            </div>
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>

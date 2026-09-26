@@ -44,6 +44,7 @@
                 <div class="account-body">
                     <div class="account-avatar" id="profileAvatar">U</div>
                     <h1 class="account-username" id="profileUsername">Username</h1>
+                    <p class="profile-handle" id="profileHandle">@username</p>
                     <p class="account-email" id="profileEmail">email@contoh.com</p>
 
                     <span class="account-badge" id="profileBadge"></span>
@@ -51,7 +52,7 @@
                     <div class="oshimen-box" id="oshimenBox" style="display:none;">
                         <div class="oshimen-photo" id="oshimenPhoto"></div>
                         <div>
-                            <p class="oshimen-label">Oshi kamu</p>
+                            <p class="oshimen-label">Oshimen kamu</p>
                             <p class="oshimen-name" id="oshimenName"></p>
                         </div>
                     </div>
@@ -74,76 +75,12 @@
                     </div>
 
                     <div class="account-actions">
-                        <button type="button" id="editProfileBtn">Edit profil</button>
+                        <a href="edit-profile.html" id="editProfileBtn">Edit profil</a>
                         <a href="#" class="account-logout-btn" id="profileLogoutBtn">Logout</a>
                     </div>
                 </div>
             </div>
         </section>
-
-        <div class="modal" id="editProfileModal">
-            <div class="modal-content settings-modal">
-                <span class="close-btn" id="closeeditProfileBtn">&times;</span>
-
-                <div class="settings-layout">
-                    <div class="settings-sidebar">
-                        <button type="button" class="settings-tab-btn active" data-tab="profil">Profil</button>
-                        <button type="button" class="settings-tab-btn" data-tab="akun">Akun & Keamanan</button>
-                    </div>
-
-                    <div class="settings-content">
-                        <!-- TAB PROFIL -->
-                        <div class="settings-panel active" data-panel="profil">
-                            <h3>Edit Profil</h3>
-
-                            <label>Foto profil</label>
-                            <div class="avatar-upload-row">
-                                <div class="avatar-preview" id="avatarPreview">U</div>
-                                <div class="avatar-upload-actions">
-                                    <button type="button" id="uploadPhotoBtn" class="btn-small">Unggah foto</button>
-                                    <button type="button" id="removePhotoBtn" class="btn-small btn-small-outline">Hapus</button>
-                                    <input type="file" id="avatarFileInput" accept="image/*" hidden>
-                                </div>
-                            </div>
-
-                            <label>Atau pilih warna avatar</label>
-                            <div class="avatar-color-picker" id="avatarColorPicker"></div>
-
-                            <label>Oshi</label>
-                            <div class="oshi-search-wrapper">
-                                <input type="text" id="oshiSearchInput" placeholder="Ketik nama lengkap member..." autocomplete="off">
-                                <div class="oshi-suggestions" id="oshiSuggestions"></div>
-                            </div>
-                            <a href="#" class="oshi-selected-preview" id="oshiSelectedPreview" style="display: none;" target="_blank"></a>
-
-                            <label>Bio singkat</label>
-                            <textarea id="bioInput" maxlength="80" placeholder="Tulis sesuatu tentang kamu..."></textarea>
-
-                            <button type="button" id="saveProfileTabBtn" class="btn-save">Simpan perubahan</button>
-                        </div>
-
-                        <!-- TAB AKUN -->
-                        <div class="settings-panel" data-panel="akun">
-                            <h3>Akun & Keamanan</h3>
-
-                            <label>Email</label>
-                            <input type="email" id="accountEmailInput" placeholder="email@contoh.com">
-
-                            <label>Password Saat Ini</label>
-                            <input type="password" id="currentPasswordInput" placeholder="••••••••">
-
-                            <label>Password Baru</label>
-                            <input type="password" id="newPasswordInput" placeholder="Minimal 6 karakter">
-
-                            <label>Konfirmasi Password Baru</label>
-                            <input type="password" id="confirmPasswordInput" placeholder="Ulangi password baru">
-
-                            <button type="button" id="saveAccountTabBtn" class="btn-save">Simpan perubahan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- ====== FOOTER ====== -->
         <footer class="footer">
@@ -158,7 +95,7 @@
                         <li><a href="index.html">Beranda</a></li>
                         <li><a href="member.html">Member</a></li>
                         <li><a href="jadwal.html">Jadwal</a></li>
-                        <li><a href="index.html">Berita</a></li>
+                        <li><a href="berita.html">Berita</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">

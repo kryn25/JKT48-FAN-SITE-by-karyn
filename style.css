@@ -1558,6 +1558,12 @@ h1, h2, h3, h4,
     font-family: 'Fredoka', 'Segoe UI', sans-serif;
 }
 
+.profile-handle {
+    font-size: 13px;
+    color: var(--teks-redup);
+    margin: 0 0 4px;
+}
+
 /* PROFIL NEW */
 .account-profile-card {
     overflow: hidden;
@@ -1591,7 +1597,7 @@ h1, h2, h3, h4,
     margin: 8px 0 16px;
 }
 
-.oshi-box {
+.oshimen-box {
     background: #fbf2e9;
     border-radius: 14px;
     padding: 14px;
@@ -1602,7 +1608,7 @@ h1, h2, h3, h4,
     text-align: left;
 }
 
-.oshi-photo {
+.oshimen-photo {
     width: 46px;
     height: 46px;
     border-radius: 50%;
@@ -1611,7 +1617,7 @@ h1, h2, h3, h4,
     flex-shrink: 0;
 }
 
-.oshi-label {
+.oshimen-label {
     font-size: 11px;
     color: #9c8d82;
     text-transform: uppercase;
@@ -1619,7 +1625,7 @@ h1, h2, h3, h4,
     margin: 0 0 2px;
 }
 
-.oshi-name {
+.oshimen-name {
     font-size: 14px;
     font-weight: 600;
     color: #241014;
@@ -1670,7 +1676,7 @@ h1, h2, h3, h4,
 }
 
 .account-actions button,
-.account-actions .account-logout-btn {
+.account-actions a {
   flex: 1;
   border-radius: 24px;
   padding: 11px;
@@ -1699,112 +1705,118 @@ h1, h2, h3, h4,
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
 
 .avatar-color-swatch.selected {
   border-color: #241014;
 }
 
-/* ====== MODAL EDIT PROFIL ====== */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
+/* ======================================================================
+   HALAMAN EDIT PROFIL — layout ala "Settings" Instagram (sidebar kiri +
+   panel kanan), tapi warnanya dipakai dari palet situs sendiri
+   (--hitam krem, --putih, --teks navy, --merah pink), bukan tema gelap.
+   ====================================================================== */
+
+   .settings-page-section {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 140px 24px 80px;
 }
 
-.modal.active {
-    display: flex;
+.settings-page-breadcrumb {
+    font-size: 0.85rem;
+    color: var(--teks-redup);
+    font-weight: 600;
+    margin-bottom: 16px;
 }
 
-.modal-content {
-    background: #1a1a1a;
-    padding: 40px;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    border: 1px solid #333;
-    max-height: 85vh;
-    overflow-y: auto;
+.settings-page-breadcrumb a {
+    color: var(--teks-redup);
+    text-decoration: none;
 }
 
-.modal-content h3 {
-    color: var(--putih);
-    margin-bottom: 24px;
-    font-size: 1.5rem;
-    font-family: 'Fredoka', sans-serif;
-}
-
-.modal-content .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    color: #888;
-    font-size: 28px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.modal-content .close-btn:hover {
+.settings-page-breadcrumb a:hover {
     color: var(--merah);
 }
 
-/* ====== SETTINGS MODAL (Edit Profil) — menggantikan .edit-profile-form lama
-   yang sudah tidak dipakai lagi karena markup-nya sudah diganti jadi
-   sidebar + tab (.settings-layout, .settings-panel, dst) ====== */
-.settings-modal {
-    max-width: 640px;
+.settings-page-breadcrumb span {
+    color: var(--teks);
+}
+
+.settings-page-card {
+    background: var(--putih);
+    border: 1px solid var(--abu);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(36, 27, 47, 0.07);
 }
 
 .settings-layout {
     display: flex;
-    gap: 24px;
+    align-items: stretch;
+    min-height: 480px;
 }
 
 .settings-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    min-width: 150px;
+    gap: 4px;
+    min-width: 232px;
     flex-shrink: 0;
-    border-right: 1px solid #333;
-    padding-right: 16px;
+    border-right: 1px solid var(--abu);
+    background: #fffaf3;
+    padding: 28px 16px;
+}
+
+.settings-sidebar-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--teks);
+    padding: 0 12px;
+    margin-bottom: 14px;
 }
 
 .settings-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     background: transparent;
     border: none;
-    color: #888;
+    color: var(--teks-redup);
     text-align: left;
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 12px 14px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
     font-family: inherit;
     transition: background 0.2s, color 0.2s;
 }
 
+.settings-tab-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
 .settings-tab-btn:hover {
-    color: var(--putih);
+    background: var(--abu);
+    color: var(--teks);
 }
 
 .settings-tab-btn.active {
-    background: #252525;
-    color: var(--putih);
-    box-shadow: inset 3px 0 0 var(--merah);
+    background: #FCE4EE;
+    color: var(--merah-gelap);
 }
 
 .settings-content {
     flex: 1;
     min-width: 0;
+    padding: 32px 36px;
 }
 
 .settings-panel {
@@ -1815,16 +1827,42 @@ h1, h2, h3, h4,
     display: block;
 }
 
+.settings-panel h3 {
+    font-family: 'Fredoka', sans-serif;
+    color: var(--teks);
+    margin-bottom: 22px;
+    font-size: 1.3rem;
+}
+
 .settings-panel label {
     display: block;
-    color: #888;
-    font-size: 0.85rem;
+    color: var(--teks-redup);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     margin-bottom: 8px;
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .settings-panel label:first-of-type {
     margin-top: 0;
+}
+
+.settings-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.settings-label-row label {
+    margin: 0;
+}
+
+.settings-char-count {
+    font-size: 0.75rem;
+    color: var(--teks-redup);
 }
 
 .settings-panel input[type="text"],
@@ -1832,12 +1870,12 @@ h1, h2, h3, h4,
 .settings-panel input[type="password"],
 .settings-panel textarea {
     width: 100%;
-    padding: 14px 18px;
-    background: #252525;
-    border: 1px solid #333;
-    border-radius: 8px;
-    color: var(--putih);
-    font-size: 0.95rem;
+    padding: 13px 16px;
+    background: #fffaf3;
+    border: 1px solid var(--abu);
+    border-radius: 12px;
+    color: var(--teks);
+    font-size: 0.92rem;
     font-family: inherit;
     box-sizing: border-box;
 }
@@ -1851,31 +1889,89 @@ h1, h2, h3, h4,
 .settings-panel textarea:focus {
     outline: none;
     border-color: var(--merah);
+    background: var(--putih);
 }
 
 .btn-save {
-    width: 100%;
-    padding: 14px;
+    padding: 13px 24px;
     background: var(--merah);
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     color: var(--putih);
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.92rem;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 20px;
     transition: background 0.3s;
 }
 
 .btn-save:hover {
-    background: #ff5555;
+    background: var(--merah-gelap);
 }
 
-/* ---- upload avatar di dalam modal ---- */
-.avatar-upload-row {
+.settings-profile-row {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
+    padding: 16px;
+    background: #fffaf3;
+    border: 1px solid var(--abu);
+    border-radius: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.settings-profile-row-info {
+    flex: 1;
+    min-width: 120px;
+}
+
+.settings-profile-row-name {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    color: var(--teks);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.settings-profile-row-handle {
+    font-size: 0.8rem;
+    color: var(--teks-redup);
+    margin: 2px 0 0;
+}
+
+.avatar-upload-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-small {
+    padding: 9px 16px;
+    border-radius: 20px;
+    border: none;
+    background: var(--merah);
+    color: var(--putih);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-small:hover {
+    background: var(--merah-gelap);
+}
+
+.btn-small-outline {
+    background: transparent;
+    border: 1px solid var(--abu);
+    color: var(--teks-redup);
+    display: none;
+}
+
+.btn-small-outline:hover {
+    border-color: var(--merah);
+    color: var(--merah);
 }
 
 .avatar-preview {
@@ -1892,41 +1988,6 @@ h1, h2, h3, h4,
     flex-shrink: 0;
 }
 
-.avatar-upload-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-}
-
-.btn-small {
-    padding: 8px 14px;
-    border-radius: 8px;
-    border: none;
-    background: var(--merah);
-    color: var(--putih);
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-}
-
-.btn-small:hover {
-    background: #ff5555;
-}
-
-.btn-small-outline {
-    background: transparent;
-    border: 1px solid #444;
-    color: #ccc;
-    display: none; /* ditampilkan lagi lewat JS begitu ada foto yang diupload */
-}
-
-.btn-small-outline:hover {
-    border-color: var(--merah);
-    color: var(--merah);
-}
-
 /* ---- pencarian & pemilihan oshi ---- */
 .oshi-search-wrapper {
     position: relative;
@@ -1938,12 +1999,13 @@ h1, h2, h3, h4,
     top: calc(100% + 6px);
     left: 0;
     right: 0;
-    background: #1f1f1f;
-    border: 1px solid #333;
-    border-radius: 10px;
+    background: var(--putih);
+    border: 1px solid var(--abu);
+    border-radius: 12px;
     max-height: 220px;
     overflow-y: auto;
     z-index: 5;
+    box-shadow: 0 12px 28px rgba(36, 27, 47, 0.1);
 }
 
 .oshi-suggestions.show {
@@ -1959,7 +2021,7 @@ h1, h2, h3, h4,
 }
 
 .oshi-suggestion-item:hover {
-    background: #2a2a2a;
+    background: #fffaf3;
 }
 
 .oshi-suggestion-photo {
@@ -1973,21 +2035,21 @@ h1, h2, h3, h4,
 
 .oshi-suggestion-name {
     font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--putih);
+    font-weight: 700;
+    color: var(--teks);
     margin: 0;
 }
 
 .oshi-suggestion-team {
     font-size: 0.72rem;
-    color: #888;
+    color: var(--teks-redup);
     margin: 0;
 }
 
 .oshi-suggestion-empty {
     padding: 14px;
     font-size: 0.8rem;
-    color: #888;
+    color: var(--teks-redup);
     text-align: center;
 }
 
@@ -1995,31 +2057,126 @@ h1, h2, h3, h4,
     display: none;
     align-items: center;
     gap: 10px;
-    background: #252525;
-    border: 1px solid #333;
-    border-radius: 10px;
+    background: #fffaf3;
+    border: 1px solid var(--abu);
+    border-radius: 12px;
     padding: 10px 14px;
     margin-top: 8px;
-    color: var(--putih);
+    color: var(--teks);
     text-decoration: none;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .oshi-selected-preview:hover {
     border-color: var(--merah);
 }
 
-@media (max-width: 560px) {
+.settings-page-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.btn-cancel-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    border: 1px solid var(--merah);
+    color: var(--merah);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-link:hover {
+    background: var(--merah);
+    color: var(--putih);
+}
+
+@media (max-width: 720px) {
+    .settings-page-section {
+        padding: 120px 16px 60px;
+    }
     .settings-layout {
         flex-direction: column;
+        min-height: 0;
     }
     .settings-sidebar {
         flex-direction: row;
         border-right: none;
-        border-bottom: 1px solid #333;
-        padding-right: 0;
-        padding-bottom: 12px;
+        border-bottom: 1px solid var(--abu);
+        padding: 14px;
         overflow-x: auto;
+        min-width: 0;
     }
+    .settings-sidebar-title {
+        display: none;
+    }
+    .settings-content {
+        padding: 24px 20px;
+    }
+    .settings-page-actions {
+        flex-direction: column-reverse;
+    }
+    .btn-cancel-link,
+    .settings-page-actions .btn-save {
+        width: 100%;
+    }
+}
+
+/* CROP FOTO PROFIL */
+.crop-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 3000;
+  align-items: center;
+  justify-content: center;
+}
+
+.crop-modal.active {
+  display: flex;
+}
+
+.crop-modal-box {
+  background: var(--putih);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.crop-modal-title {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--teks);
+}
+
+.crop-image-wrapper {
+  max-height: 340px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+}
+
+.crop-image-wrapper img {
+  display: block;
+  max-width: 100%;
+}
+
+.crop-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.crop-modal-actions button {
+  flex: 1;
 }

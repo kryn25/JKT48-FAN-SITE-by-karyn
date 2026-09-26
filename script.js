@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const username = document.getElementById('loginUsername').value;
       const password = document.getElementById('loginPassword').value;
-      console.log('2. Username:', username, '| Password:', password);
+      console.log('2. Username', username, '| Password:', password);
       
       const savedUser = localStorage.getItem('jkt48_user_' + username);
       console.log('3. Data akun ditemukan?', savedUser);
@@ -344,7 +344,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const savedUser = localStorage.getItem('jkt48_user_' + currentUsername);
   const userData = savedUser ? JSON.parse(savedUser) : null;
 
-  profileUsernameEl.textContent = currentUsername;
+  // Nama besar pakai nickname kalau sudah diisi, kalau belum pakai username
+  profileUsernameEl.textContent = (userData && userData.nickname) ? userData.nickname : currentUsername;
+
+  const profileHandleEl = document.getElementById('profileHandle');
+  if (profileHandleEl) {
+    profileHandleEl.textContent = '@' + currentUsername;
+  }
 
   const profileEmailEl = document.getElementById('profileEmail');
   if (profileEmailEl) {
@@ -369,10 +375,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Preset warna avatar
 const avatarPresets = [
-  ['#E4145C', '#F2994A'],
-  ['#7C5CFC', '#E4145C'],
-  ['#2DD4BF', '#7C5CFC'],
-  ['#F2994A', '#2DD4BF']
+  { type: 'color', value: ['#E4145C', '#F2994A'] },
+  { type: 'color', value: ['#7C5CFC', '#E4145C'] },
+  { type: 'color', value: ['#2DD4BF', '#7C5CFC'] },
+  { type: 'color', value: ['#F2994A', '#2DD4BF'] },
+  { type: 'color', value: ['#22C55E', '#0EA5E9'] },
+  { type: 'emoji', value: '🐱' },
+  { type: 'emoji', value: '👽' },
+  { type: 'emoji', value: '🌸' },
+  { type: 'emoji', value: '🐻' },
+  { type: 'emoji', value: '⭐' }
 ];
 
 // Warna badge per team
@@ -382,24 +394,10 @@ const teamBadgeColor = {
   passion: { bg: '#FFF1DA', text: '#A15A0A', label: 'Fan team passion' }
 };
 
+// === HALAMAN PROFIL: render avatar/oshi/bio/stat di kartu profil publik ===
 document.addEventListener('DOMContentLoaded', function () {
-  const editProfileBtn = document.getElementById('editProfileBtn');
-  if (!editProfileBtn) return; // hanya jalan di profile.html
-
-  const editProfileModal = document.getElementById('editProfileModal');
-  // === PERBAIKAN: id asli di HTML huruf kecil semua ("closeeditProfileBtn"), bukan "closeEditProfileBtn" ===
-  const closeEditProfileBtn = document.getElementById('closeeditProfileBtn');
-  const bioInput = document.getElementById('bioInput');
-  const avatarColorPicker = document.getElementById('avatarColorPicker');
-  const avatarPreview = document.getElementById('avatarPreview');
-  const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
-  const removePhotoBtn = document.getElementById('removePhotoBtn');
-  const avatarFileInput = document.getElementById('avatarFileInput');
-  // === PERBAIKAN: HTML sekarang pakai search box + saran, bukan <select id="oshiSelect"> lagi ===
-  const oshiSearchInput = document.getElementById('oshiSearchInput');
-  const oshiSuggestions = document.getElementById('oshiSuggestions');
-  const oshiSelectedPreview = document.getElementById('oshiSelectedPreview');
-  const saveProfileTabBtn = document.getElementById('saveProfileTabBtn');
+  const profileAvatarEl = document.getElementById('profileAvatar');
+  if (!profileAvatarEl) return; // hanya jalan di profile.html
 
   const currentUsername = localStorage.getItem('jkt48_user');
   if (!currentUsername) return;
@@ -411,149 +409,22 @@ document.addEventListener('DOMContentLoaded', function () {
     return raw ? JSON.parse(raw) : {};
   }
 
-  function saveUserData(data) {
-    localStorage.setItem(userKey, JSON.stringify(data));
-  }
-
-  // state sementara selagi modal terbuka, baru dipermanenkan saat klik "Simpan perubahan"
-  let draftAvatarPhoto = null;
-  let draftAvatarColorIndex = 0;
-  let draftOshiName = '';
-
-  // ===== render swatch warna avatar (dibuat sekali saat halaman dimuat) =====
-  avatarPresets.forEach(function (colors, i) {
-    const swatch = document.createElement('div');
-    swatch.className = 'avatar-color-swatch';
-    swatch.style.background = 'linear-gradient(135deg, ' + colors[0] + ', ' + colors[1] + ')';
-    swatch.dataset.index = i;
-    swatch.addEventListener('click', function () {
-      draftAvatarColorIndex = i;
-      draftAvatarPhoto = null; // pilih warna = batalkan foto yang lagi dipakai
-      avatarFileInput.value = '';
-      document.querySelectorAll('.avatar-color-swatch').forEach(s => s.classList.remove('selected'));
-      swatch.classList.add('selected');
-      renderAvatarPreview();
-    });
-    avatarColorPicker.appendChild(swatch);
-  });
-
-  // ===== preview avatar di dalam modal (foto kalau ada, kalau tidak pakai warna + inisial) =====
-  function renderAvatarPreview() {
-    if (draftAvatarPhoto) {
-      avatarPreview.style.background = 'url(' + draftAvatarPhoto + ') center/cover';
-      avatarPreview.textContent = '';
-      removePhotoBtn.style.display = 'inline-block';
-    } else {
-      avatarPreview.style.background = 'linear-gradient(135deg, ' + avatarPresets[draftAvatarColorIndex][0] + ', ' + avatarPresets[draftAvatarColorIndex][1] + ')';
-      avatarPreview.textContent = currentUsername.charAt(0).toUpperCase();
-      removePhotoBtn.style.display = 'none';
-    }
-  }
-
-  // ===== upload / hapus foto =====
-  uploadPhotoBtn.addEventListener('click', function () {
-    avatarFileInput.click();
-  });
-
-  avatarFileInput.addEventListener('change', function () {
-    const file = avatarFileInput.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      draftAvatarPhoto = e.target.result;
-      renderAvatarPreview();
-    };
-    reader.readAsDataURL(file);
-  });
-
-  removePhotoBtn.addEventListener('click', function () {
-    draftAvatarPhoto = null;
-    avatarFileInput.value = '';
-    renderAvatarPreview();
-  });
-
-  // ===== cari & pilih oshi =====
-  function renderOshiSuggestions(query) {
-    const q = query.trim().toLowerCase();
-    if (!q) {
-      oshiSuggestions.classList.remove('show');
-      oshiSuggestions.innerHTML = '';
-      return;
-    }
-
-    const matches = memberData.filter(function (m) {
-      return m.name.toLowerCase().includes(q);
-    }).slice(0, 6);
-
-    if (matches.length === 0) {
-      oshiSuggestions.innerHTML = '<div class="oshi-suggestion-empty">Nama member tidak ketemu. Coba ketik ulang persis nama lengkapnya sesuai halaman Member.</div>';
-    } else {
-      oshiSuggestions.innerHTML = matches.map(function (m) {
-        return '<div class="oshi-suggestion-item" data-name="' + m.name + '">' +
-          '<div class="oshi-suggestion-photo" style="background-image:url(' + m.photo + ')"></div>' +
-          '<div>' +
-            '<p class="oshi-suggestion-name">' + m.name + '</p>' +
-            '<p class="oshi-suggestion-team">Team ' + m.team.charAt(0).toUpperCase() + m.team.slice(1) + '</p>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-    }
-    oshiSuggestions.classList.add('show');
-  }
-
-  function selectOshi(name) {
-    const member = memberData.find(function (m) { return m.name === name; });
-    if (!member) return;
-
-    draftOshiName = member.name;
-    oshiSearchInput.value = member.name;
-    oshiSuggestions.classList.remove('show');
-    oshiSuggestions.innerHTML = '';
-
-    oshiSelectedPreview.style.display = 'flex';
-    oshiSelectedPreview.href = member.link;
-    oshiSelectedPreview.innerHTML =
-      '<div class="oshi-suggestion-photo" style="background-image:url(' + member.photo + ')"></div>' +
-      '<span>Lihat profil ' + member.name + ' →</span>';
-  }
-
-  oshiSearchInput.addEventListener('input', function () {
-    draftOshiName = oshiSearchInput.value.trim(); // tetap tersimpan walau belum cocok member manapun (nama manual)
-    renderOshiSuggestions(oshiSearchInput.value);
-    oshiSelectedPreview.style.display = 'none';
-  });
-
-  oshiSearchInput.addEventListener('focus', function () {
-    if (oshiSearchInput.value) renderOshiSuggestions(oshiSearchInput.value);
-  });
-
-  oshiSuggestions.addEventListener('click', function (e) {
-    const item = e.target.closest('.oshi-suggestion-item');
-    if (!item) return;
-    selectOshi(item.dataset.name);
-  });
-
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('.oshi-search-wrapper')) {
-      oshiSuggestions.classList.remove('show');
-    }
-  });
-
-  // ===== render tampilan profil publik (avatar, oshi box, bio, stat) =====
   function renderProfileExtras() {
     const userData = getUserData();
-    const avatarEl = document.getElementById('profileAvatar');
 
-    if (avatarEl) {
-      if (userData.avatarPhoto) {
-        avatarEl.style.background = 'url(' + userData.avatarPhoto + ') center/cover';
-        avatarEl.textContent = '';
-      } else {
-        const colorIndex = userData.avatarColorIndex || 0;
-        avatarEl.style.background = 'linear-gradient(135deg, ' + avatarPresets[colorIndex][0] + ', ' + avatarPresets[colorIndex][1] + ')';
-        avatarEl.textContent = currentUsername.charAt(0).toUpperCase();
-      }
+  if (userData.avatarPhoto) {
+    profileAvatarEl.style.background = 'url(' + userData.avatarPhoto + ') center/cover';
+    profileAvatarEl.textContent = '';
+  } else {
+    const preset = avatarPresets[userData.avatarColorIndex || 0];
+    if (preset.type === 'color') {
+      profileAvatarEl.style.background = 'linear-gradient(135deg, ' + preset.value[0] + ', ' + preset.value[1] + ')';
+      profileAvatarEl.textContent = currentUsername.charAt(0).toUpperCase();
+    } else {
+      profileAvatarEl.style.background = '#fffaf3';
+      profileAvatarEl.textContent = preset.value;
     }
+  }
 
     const oshimenBox = document.getElementById('oshimenBox');
     const oshimenName = document.getElementById('oshimenName');
@@ -568,6 +439,15 @@ document.addEventListener('DOMContentLoaded', function () {
         oshimenName.textContent = userData.oshi + (member ? ' · Team ' + member.team.charAt(0).toUpperCase() + member.team.slice(1) : '');
       }
       if (oshimenPhoto && member) oshimenPhoto.style.backgroundImage = 'url(' + member.photo + ')';
+
+      // ===== klik kotak oshi -> pindah ke halaman profil member
+      if (oshimenBox && member) {
+        oshimenBox.style.cursor = 'pointer';
+        oshimenBox.title = 'Lihat Profil ' + (member.nickname || member.name);
+        oshimenBox.onclick = function () {
+          window.location.href = member.link;
+        };
+      }
 
       if (profileBadge) {
         const badge = member ? teamBadgeColor[member.team] : null;
@@ -604,8 +484,227 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   renderProfileExtras();
+});
 
-  // ===== switch tab "Profil" <-> "Akun & Keamanan" di sidebar modal =====
+// === HALAMAN EDIT PROFIL (edit-profil.html) — sekarang halaman sendiri, bukan modal lagi ===
+document.addEventListener('DOMContentLoaded', function () {
+  const editProfilePage = document.getElementById('editProfilePage');
+  if (!editProfilePage) return; // hanya jalan di edit-profil.html
+
+  const bioInput = document.getElementById('bioInput');
+  const bioCharCount = document.getElementById('bioCharCount');
+  if (bioInput && bioCharCount) {
+    bioInput.addEventListener('input', function () {
+      bioCharCount.textContent = bioInput.value.length;
+    });
+  }
+  const bioCount = document.getElementById('bioCount');
+  const nicknameInput = document.getElementById('nicknameInput');
+  const avatarColorPicker = document.getElementById('avatarColorPicker');
+  const avatarPreview = document.getElementById('avatarPreview');
+  const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+  const removePhotoBtn = document.getElementById('removePhotoBtn');
+  const avatarFileInput = document.getElementById('avatarFileInput');
+  const oshiSearchInput = document.getElementById('oshiSearchInput');
+  const oshiSuggestions = document.getElementById('oshiSuggestions');
+  const oshiSelectedPreview = document.getElementById('oshiSelectedPreview');
+  const saveProfileTabBtn = document.getElementById('saveProfileTabBtn');
+
+  const currentUsername = localStorage.getItem('jkt48_user');
+  if (!currentUsername) {
+    // belum login tapi coba akses edit-profil.html langsung -> lempar ke beranda
+    window.location.href = 'index.html';
+    return;
+  }
+
+  const userKey = 'jkt48_user_' + currentUsername;
+
+  function getUserData() {
+    const raw = localStorage.getItem(userKey);
+    return raw ? JSON.parse(raw) : {};
+  }
+
+  function saveUserData(data) {
+    localStorage.setItem(userKey, JSON.stringify(data));
+  }
+
+  let draftAvatarPhoto = null;
+  let draftAvatarColorIndex = 0;
+  let draftOshiName = '';
+
+  // ===== render swatch warna avatar (dibuat sekali saat halaman dimuat) =====
+  avatarPresets.forEach(function (preset, i) {
+    const swatch = document.createElement('div');
+    swatch.className = 'avatar-color-swatch';
+
+    if (preset.type === 'color') {
+      swatch.style.background = 'linear-gradient(135deg, ' + preset.value[0] + ', ' + preset.value[1] + ')';
+    } else {
+      swatch.textContent = preset.value // emoji
+      swatch.style.background = '#fffaf3';
+    }
+
+    swatch.dataset.index = i;
+    swatch.addEventListener('click', function () {
+      draftAvatarColorIndex = i;
+      draftAvatarPhoto = null; // pilih preset = batalkan foto yang lagi dipakai
+      avatarFileInput.value = '';
+      document.querySelectorAll('.avatar-color-swatch').forEach(s => s.classList.remove('selected'));
+      swatch.classList.add('selected');
+      renderAvatarPreview();
+    });
+    avatarColorPicker.appendChild(swatch);
+  });
+
+  // ===== preview avatar (foto kalau ada, kalau tidak pakai warna + inisial) =====
+  function renderAvatarPreview() {
+    if (draftAvatarPhoto) {
+      avatarPreview.style.background = 'url(' + draftAvatarPhoto + ') center/cover';
+      avatarPreview.textContent = '';
+      removePhotoBtn.style.display = 'inline-block';
+      return;
+    }
+
+    const preset = avatarPresets[draftAvatarColorIndex];
+    if (preset.type === 'color') {
+      avatarPreview.style.background = 'linear-gradient(135deg, ' + preset.value[0] + ', ' + preset.value[1] + ')';
+      avatarPreview.textContent = currentUsername.charAt(0).toUpperCase();
+    } else {
+      avatarPreview.style.background = '#fffaf3';
+      avatarPreview.textContent = preset.value // emoji
+    }
+    removePhotoBtn.style.display = 'none';
+  }
+
+  // ==== hitung karakter bio secara live ====
+  if (bioCount) {
+    bioInput.addEventListener('input', function () {
+      bioCount.textContent = bioInput.value.length + '/80';
+    });
+  }
+
+  // ===== upload / hapus foto =====
+  uploadPhotoBtn.addEventListener('click', function () {
+    avatarFileInput.click();
+  });
+
+  let cropper;
+  const cropModal = document.getElementById('cropModal');
+  const cropImage = document.getElementById('cropImage');
+  const cropConfirmBtn = document.getElementById('cropConfirmBtn');
+  const cropCancelBtn = document.getElementById('cropCancelBtn');
+
+  avatarFileInput.addEventListener('change', function () {
+    const file = avatarFileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      cropImage.src = e.target.result;
+      cropModal.classList.add('active');
+
+      if (cropper) cropper.destroy();
+      cropper = new Cropper(cropImage, {
+        aspectRatio: 1,     // hasil crop persegi, pas buat avatar bulat
+        viewMode: 1,
+        dragMode: 'move',
+        background: false
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+
+  cropConfirmBtn.addEventListener('click', function () {
+    const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+    draftAvatarPhoto = canvas.toDataURL('image/png');
+
+    cropper.destroy();
+    cropModal.classList.remove('active');
+    avatarFileInput.value = '';
+    renderAvatarPreview();
+  });
+
+  cropCancelBtn.addEventListener('click', function () {
+    if (cropper) cropper.destroy();
+    cropModal.classList.remove('active');
+    avatarFileInput.value = '';
+  });
+
+  removePhotoBtn.addEventListener('click', function () {
+    draftAvatarPhoto = null;
+    avatarFileInput.value = '';
+    renderAvatarPreview();
+  });
+
+  // ===== cari & pilih oshi =====
+  function renderOshiSuggestions(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      oshiSuggestions.classList.remove('show');
+      oshiSuggestions.innerHTML = '';
+      return;
+    }
+
+    const matches = memberData.filter(function (m) {
+      const nickname = (m.nickname || m.name).toLowerCase();
+      return nickname.startsWith(q); // hanya cocokkan inisial
+    }).slice(0, 6);
+
+    if (matches.length === 0) {
+      oshiSuggestions.innerHTML = '<div class="oshi-suggestion-empty">Nama member tidak ketemu. Coba ketik ulang.</div>';
+    } else {
+      oshiSuggestions.innerHTML = matches.map(function (m) {
+        return '<div class="oshi-suggestion-item" data-name="' + m.name + '">' +
+          '<div class="oshi-suggestion-photo" style="background-image:url(' + m.photo + ')"></div>' +
+          '<div>' +
+            '<p class="oshi-suggestion-name">' + m.name + '</p>' +
+            '<p class="oshi-suggestion-team">' + m.name + m.team.charAt(0).toUpperCase() + m.team.slice(1) + '</p>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+    oshiSuggestions.classList.add('show');
+  }
+
+  function selectOshi(name) {
+    const member = memberData.find(function (m) { return m.name === name; });
+    if (!member) return;
+
+    draftOshiName = member.name;
+    oshiSearchInput.value = member.name;
+    oshiSuggestions.classList.remove('show');
+    oshiSuggestions.innerHTML = '';
+
+    oshiSelectedPreview.style.display = 'flex';
+    oshiSelectedPreview.href = member.link;
+    oshiSelectedPreview.innerHTML =
+      '<div class="oshi-suggestion-photo" style="background-image:url(' + member.photo + ')"></div>' +
+      '<span>Lihat profil ' + member.name + ' →</span>';
+  }
+
+  oshiSearchInput.addEventListener('input', function () {
+    draftOshiName = oshiSearchInput.value.trim();
+    renderOshiSuggestions(oshiSearchInput.value);
+    oshiSelectedPreview.style.display = 'none';
+  });
+
+  oshiSearchInput.addEventListener('focus', function () {
+    if (oshiSearchInput.value) renderOshiSuggestions(oshiSearchInput.value);
+  });
+
+  oshiSuggestions.addEventListener('click', function (e) {
+    const item = e.target.closest('.oshi-suggestion-item');
+    if (!item) return;
+    selectOshi(item.dataset.name);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.oshi-search-wrapper')) {
+      oshiSuggestions.classList.remove('show');
+    }
+  });
+
+  // ===== switch tab "Profil" <-> "Akun & Keamanan" =====
   const settingsTabBtns = document.querySelectorAll('.settings-tab-btn');
   const settingsPanels = document.querySelectorAll('.settings-panel');
   settingsTabBtns.forEach(function (btn) {
@@ -618,11 +717,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ===== buka modal: isi ulang semua field sesuai data yang tersimpan =====
-  editProfileBtn.addEventListener('click', function () {
+  // ===== isi semua field begitu halaman dibuka (dulu ini jalan pas modal diklik, sekarang pas halaman dimuat) =====
+  (function fillFormFromSavedData() {
     const userData = getUserData();
 
+    const previewUsername = document.getElementById('previewUsername');
+    const previewHandle = document.getElementById('previewHandle');
+    if (previewUsername) previewUsername.textContent = userData.nickname || currentUsername;
+    if (previewHandle) previewHandle.textContent = '@' + currentUsername;
+
     bioInput.value = userData.bio || '';
+    nicknameInput.value = userData.nickname || '';
+    if (bioCharCount) bioCharCount.textContent = bioInput.value.length;
+
+    const settingsProfileName = document.getElementById('settingsProfileName');
+    if (settingsProfileName) settingsProfileName.textContent = userData.nickname || currentUsername;
+    const settingsProfileHandle = document.getElementById('settingsProfileHandle');
+    if (settingsProfileHandle) settingsProfileHandle.textContent = '@' + currentUsername;
 
     draftAvatarPhoto = userData.avatarPhoto || null;
     draftAvatarColorIndex = userData.avatarColorIndex || 0;
@@ -654,35 +765,23 @@ document.addEventListener('DOMContentLoaded', function () {
     if (currentPasswordInput) currentPasswordInput.value = '';
     if (newPasswordInput) newPasswordInput.value = '';
     if (confirmPasswordInput) confirmPasswordInput.value = '';
+  })();
 
-    editProfileModal.classList.add('active');
-  });
-
-  closeEditProfileBtn.addEventListener('click', function () {
-    editProfileModal.classList.remove('active');
-  });
-
-  editProfileModal.addEventListener('click', function (e) {
-    if (e.target === editProfileModal) {
-      editProfileModal.classList.remove('active');
-    }
-  });
-
-  // === PERBAIKAN: sebelumnya listen ke "submit" pada form yang sudah tidak ada di HTML.
-  // Sekarang tombolnya type="button", jadi listen langsung ke "click". ===
+  // ===== simpan tab "Profil" -> balik ke profile.html =====
   saveProfileTabBtn.addEventListener('click', function () {
     const userData = getUserData();
     userData.bio = bioInput.value.trim();
+    userData.nickname = nicknameInput.value.trim();
     userData.oshi = draftOshiName;
     userData.avatarPhoto = draftAvatarPhoto || null;
     userData.avatarColorIndex = draftAvatarColorIndex;
 
     saveUserData(userData);
-    renderProfileExtras();
-    showNotification('Profil berhasil diperbarui!', 'success');
+    setFlashNotification('Profil berhasil diperbarui!', 'success');
+    window.location.href = 'profile.html';
   });
 
-  // ===== simpan tab "Akun & Keamanan" (baru, sebelumnya panel ini kosong) =====
+  // ===== simpan tab "Akun & Keamanan" =====
   const saveAccountTabBtn = document.getElementById('saveAccountTabBtn');
   if (saveAccountTabBtn) {
     saveAccountTabBtn.addEventListener('click', function () {
@@ -713,15 +812,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       saveUserData(userData);
-
-      const profileEmailEl = document.getElementById('profileEmail');
-      if (profileEmailEl) profileEmailEl.textContent = userData.email || '-';
-
-      currentPasswordInput.value = '';
-      newPasswordInput.value = '';
-      confirmPasswordInput.value = '';
-
-      showNotification('Akun berhasil diperbarui!', 'success');
+      setFlashNotification('Akun berhasil diperbarui!', 'success');
+      window.location.href = 'profile.html';
     });
   }
 });
@@ -751,6 +843,7 @@ document.addEventListener('DOMContentLoaded', function () {
 const memberData = [
   {
     name: "Adeline Wijaya",
+    nickname: "Delynn",
     team: "dream",
     birthdate: "09-01",
     photo: "image/adeline.jpg",
@@ -758,6 +851,7 @@ const memberData = [
   },
   {
     name: "Febriola Sinambela",
+    nickname: "Olla",
     team: "dream",
     birthdate: "02-26",
     photo: "image/febriola.jpg",
@@ -765,6 +859,7 @@ const memberData = [
   },
   {
     name: "Freya Jayawardana",
+    nickname: "Freya",
     team: "dream",
     birthdate: "02-13",
     photo: "image/freya.jpg",
@@ -772,6 +867,7 @@ const memberData = [
   },
   {
     name: "Gabriela Abigail",
+    nickname: "Ella",
     team: "dream",
     birthdate: "08-07",
     photo: "image/gabriela.jpg",
@@ -779,13 +875,15 @@ const memberData = [
   },
   {
     name: "Gita Sekar Andarini",
+    nickname: "Gita",
     team: "dream",
     birthdate: "06-30",
     photo: "image/gita.jpg",
     link: "dream/gita.html",
   },
   {
-    name: "greesella Adhalia",
+    name: "Greesella Adhalia",
+    nickname: "Greesel",
     team: "dream",
     birthdate: "01-10",
     photo: "image/gressel.jpg",
@@ -793,6 +891,7 @@ const memberData = [
   },
   {
     name: "Helisma Putri",
+    nickname: "Eli",
     team: "dream",
     birthdate: "06-15",
     photo: "image/helisma.jpg",
@@ -800,6 +899,7 @@ const memberData = [
   },
   {
     name: "Jesslyn Elly",
+    nickname: "Lyn",
     team: "dream",
     birthdate: "09-13",
     photo: "image/jesslyn.jpg",
@@ -807,6 +907,7 @@ const memberData = [
   },
   {
     name: "Marsha Lenathea",
+    nickname: "Marsha",
     team: "dream",
     birthdate: "01-09",
     photo: "image/marsha.jpg",
@@ -814,6 +915,7 @@ const memberData = [
   },
   {
     name: "Nina Tutachia",
+    nickname: "Nachia",
     team: "dream",
     birthdate: "10-16",
     photo: "image/nina.jpg",
@@ -821,6 +923,7 @@ const memberData = [
   },
   {
     name: "Oline Manuel",
+    nickname: "Oline",
     team: "dream",
     birthdate: "11-03",
     photo: "image/oline.jpg",
@@ -828,6 +931,7 @@ const memberData = [
   },
   {
     name: "Shabilqis Naila",
+    nickname: "Nala",
     team: "dream",
     birthdate: "09-01",
     photo: "image/shabilqis.jpg",
@@ -835,6 +939,7 @@ const memberData = [
   },
   {
     name: "Anindya Ramadhani",
+    nickname: "Anin",
     team: "love",
     birthdate: "10-18",
     photo: "image/anin.jpg",
@@ -842,6 +947,7 @@ const memberData = [
   },
   {
     name: "Aurellia",
+    nickname: "Lia",
     team: "love",
     birthdate: "10-29",
     photo: "image/lia.jpg",
@@ -849,6 +955,7 @@ const memberData = [
   },
   {
     name: "Aurhel Alana",
+    nickname: "Lana",
     team: "love",
     birthdate: "09-14",
     photo: "image/lana.jpg",
@@ -856,6 +963,7 @@ const memberData = [
   },
   {
     name: "Celline Thefani",
+    nickname: "Elin",
     team: "love",
     birthdate: "04-09",
     photo: "image/elin.jpg",
@@ -863,6 +971,7 @@ const memberData = [
   },
   {
     name: "Cynthia Yaputera",
+    nickname: "Cynthia",
     team: "love",
     birthdate: "11-22",
     photo: "image/cynthia.jpg",
@@ -870,6 +979,7 @@ const memberData = [
   },
   {
     name: "Fiony Alveria",
+    nickname: "Fiony",
     team: "love",
     birthdate: "02-04",
     photo: "image/fiony.jpg",
@@ -877,6 +987,7 @@ const memberData = [
   },
   {
     name: "Fritzy Rosmerian",
+    nickname: "Fritzy",
     team: "love",
     birthdate: "07-28",
     photo: "image/anin.jpg",
@@ -884,6 +995,7 @@ const memberData = [
   },
   {
     name: "Grace Octaviani",
+    nickname: "Gracie",
     team: "love",
     birthdate: "10-18",
     photo: "image/gracie.jpg",
@@ -891,6 +1003,7 @@ const memberData = [
   },
   {
     name: "Hillary Abigail",
+    nickname: "Lily",
     team: "love",
     birthdate: "10-19",
     photo: "image/lily.jpg",
@@ -898,6 +1011,7 @@ const memberData = [
   },
   {
     name: "Indah cahya",
+    nickname: "Indah",
     team: "love",
     birthdate: "03-20",
     photo: "image/indah.jpg",
@@ -905,6 +1019,7 @@ const memberData = [
   },
   {
     name: "Jazzlyn Trisha",
+    nickname: "Trisha",
     team: "love",
     birthdate: "02-16",
     photo: "image/trisha.jpg",
@@ -912,6 +1027,7 @@ const memberData = [
   },
   {
     name: "Michelle Alexandra",
+    nickname: "Michie",
     team: "love",
     birthdate: "04-22",
     photo: "image/michie.jpg",
@@ -919,6 +1035,7 @@ const memberData = [
   },
   {
     name: "Nayla Suji",
+    nickname: "Nayla",
     team: "love",
     birthdate: "06-18",
     photo: "image/nayla.jpg",
@@ -926,6 +1043,7 @@ const memberData = [
   },
   {
     name: "Abigail Rachel",
+    nickname: "Aralie",
     team: "passion",
     birthdate: "08-06",
     photo: "image/abgial.jpg",
@@ -933,6 +1051,7 @@ const memberData = [
   },
   {
     name: "Angelina Christy",
+    nickname: "Christy",
     team: "passion",
     birthdate: "12-05",
     photo: "image/christy.jpg",
@@ -940,6 +1059,7 @@ const memberData = [
   },
   {
     name: "Catherina Vallencia",
+    nickname: "Erine",
     team: "passion",
     birthdate: "08-21",
     photo: "image/erine.jpg",
@@ -947,6 +1067,7 @@ const memberData = [
   },
   {
     name: "Cornelia Vanisa",
+    nickname: "Oniel",
     team: "passion",
     birthdate: "07-26",
     photo: "image/oniel.jpg",
@@ -954,6 +1075,7 @@ const memberData = [
   },
   {
     name: "Dena Natalia",
+    nickname: "Dena",
     team: "passion",
     birthdate: "12-16",
     photo: "image/dena.jpg",
@@ -961,6 +1083,7 @@ const memberData = [
   },
   {
     name: "Desy Natalia",
+    nickname: "Daisy",
     team: "passion",
     birthdate: "12-16",
     photo: "image/daisy.jpg",
@@ -968,6 +1091,7 @@ const memberData = [
   },
   {
     name: "Jessica Chandra",
+    nickname: "Jessi",
     team: "passion",
     birthdate: "09-23",
     photo: "image/jessica.jpg",
@@ -975,6 +1099,7 @@ const memberData = [
   },
   {
     name: "Kathrina Irene",
+    nickname: "Kathrina",
     team: "passion",
     birthdate: "07-26",
     photo: "image/katrina.jpg",
@@ -982,13 +1107,15 @@ const memberData = [
   },
   {
     name: "Lulu Salsabila",
+    nickname: "Lulu",
     team: "passion",
     birthdate: "08-23",
     photo: "image/lulu.jpg",
     link: "passion/lulu.html",
   },
   {
-    name: "michelle Levia",
+    name: "Michelle Levia",
+    nickname: "Levi",
     team: "passion",
     birthdate: "01-24",
     photo: "image/levi.jpg",
@@ -996,6 +1123,7 @@ const memberData = [
   },
   {
     name: "Mutiara Azzahra",
+    nickname: "Muthe",
     team: "passion",
     birthdate: "07-12",
     photo: "image/mutiara.jpg",
@@ -1003,6 +1131,7 @@ const memberData = [
   },
   {
     name: "Raisha Syifa",
+    nickname: "Raisha",
     team: "passion",
     birthdate: "11-11",
     photo: "image/raisha.jpg",
@@ -1010,6 +1139,7 @@ const memberData = [
   },
   {
     name: "Ribka Budiman",
+    nickname: "Ribka",
     team: "passion",
     birthdate: "01-13",
     photo: "image/ribka.jpg",
@@ -1017,6 +1147,7 @@ const memberData = [
   },
   {
     name: "Victoria Kimberly",
+    nickname: "Kimmy",
     team: "passion",
     birthdate: "03-06",
     photo: "image/kimberly.jpg",
