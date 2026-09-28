@@ -37,50 +37,53 @@
         </div>
 
         <!-- ====== PROFIL AKUN ====== -->
-        <section class="account-profile-section">
-            <div class="account-profile-card">
-                <div class="account-banner"></div>
+         <section class="account-profile-section">
+            <div class="account-profile-layout">
 
-                <div class="account-body">
-                    <div class="account-avatar" id="profileAvatar">U</div>
-                    <h1 class="account-username" id="profileUsername">Username</h1>
-                    <p class="profile-handle" id="profileHandle">@username</p>
-                    <p class="account-email" id="profileEmail">email@contoh.com</p>
+                <!-- KARTU KIRI: PROFILE PENGGUNA -->
+                <div class="account-profile-card">
+                    <div class="account-banner"></div>
 
-                    <span class="account-badge" id="profileBadge"></span>
+                    <div class="account-body">
+                        <div class="account-avatar" id="profileAvatar">U</div>
+                        <h1 class="account-username" id="profileUsername">Username</h1>
+                        <p class="profile-handle" id="profileHandle">@Username</p>
+                        <p class="account-email" id="priofileEmail">email@contoh.com</p>
 
-                    <div class="oshimen-box" id="oshimenBox" style="display:none;">
-                        <div class="oshimen-photo" id="oshimenPhoto"></div>
-                        <div>
-                            <p class="oshimen-label">Oshimen kamu</p>
-                            <p class="oshimen-name" id="oshimenName"></p>
+                        <span class="account-badge" id="profileBadge"></span>
+
+                        <p class="account-bio" id="profileBio"></p>
+
+                        <div class="account-stats">
+                            <div class="stat-box">
+                                <p class="stat-value" id="statDays">-</p>
+                                <p class="stat-label">level fans</p>
+                            </div>
                         </div>
-                    </div>
 
-                    <p class="account-bio" id="profileBio"></p>
-
-                    <div class="account-stats">
-                        <div class="stat-box">
-                            <p class="stat-value" id="statDays">-</p>
-                            <p class="stat-label">hari jadi fans</p>
+                        <div class="account-actions">
+                            <a href="edit-profile.html" id="editProfileBtn">Edit Profil</a>
+                            <a href="#" class="account-logout-btn" id="profileLogoutBtn"></a>
                         </div>
-                        <div class="stat-box">
-                            <p class="stat-value" id="statLevel">-</p>
-                            <p class="stat-label">level fans</p>
-                        </div>
-                        <div class="stat-box">
-                            <p class="stat-value" id="statYear">-</p>
-                            <p class="stat-label">bergabung</p>
-                        </div>
-                    </div>
-
-                    <div class="account-actions">
-                        <a href="edit-profile.html" id="editProfileBtn">Edit profil</a>
-                        <a href="#" class="account-logout-btn" id="profileLogoutBtn">Logout</a>
                     </div>
                 </div>
+
+                <!-- KARTU KANAN: OSHI PENGGUNA -->
+                <div class="account-profile-card-oshi oshi-profile-card" id="oshiProfileCard" style="display: none;">
+                    <div class="account-banner"></div>
+
+                    <div class="account-body">
+                        <div class="oshi-profile-photo" id="oshiProfilePhoto"></div>
+                        <p class="oshi-profile-label">Oshimen kamu</p>
+                        <h2 class="oshi-profile-fullname" id="oshiProfileFullname">Nama Lengkap</h2>
+                        <p class="oshi-profile-nickname" id="oshiProfileNickname"></p>
+                        <span class="account-badge" id="oshiProfileBadge"></span>
+                        <a href="#" class="oshi-profile-link" id="oshiProfileLink">Lihat profile member →</a>
+                    </div>
+                </div>
+                
             </div>
-        </section>
+         </section>
 
         <!-- ====== FOOTER ====== -->
         <footer class="footer">

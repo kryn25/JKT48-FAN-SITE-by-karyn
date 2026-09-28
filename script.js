@@ -426,47 +426,63 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-    const oshimenBox = document.getElementById('oshimenBox');
-    const oshimenName = document.getElementById('oshimenName');
-    const oshimenPhoto = document.getElementById('oshimenPhoto');
-    const profileBadge = document.getElementById('profileBadge');
+  const oshiProfileCard = document.getElementById('oshiProfileCard');
+  const oshiProfilePhoto = document.getElementById('oshiProfilePhoto');
+  const oshiProfileFullname = document.getElementById('oshiProfileFullname');
+  const oshiProfileNickname = document.getElementById('oshiProfileNickname');
+  const oshiProfileBadge = document.getElementById('oshiProfileBadge');
+  const oshiProfileLink = document.getElementById('oshiProfileLink');
+  const profileBadge = document.getElementById('profileBadge');
+  const profileBio = document.getElementById('profileBio');
 
-    if (userData.oshi) {
-      const member = memberData.find(function (m) { return m.name === userData.oshi; });
+  if (userData.oshi) {
+    const member = memberData.find(function (m) { return m.name === userData.oshi; });
+    
+    // tampilkan kartu oshi di sebelah kanan
+    if (oshiProfileCard) oshiProfileCard.style.display = 'block';
 
-      if (oshimenBox) oshimenBox.style.display = 'flex';
-      if (oshimenName) {
-        oshimenName.textContent = userData.oshi + (member ? ' · Team ' + member.team.charAt(0).toUpperCase() + member.team.slice(1) : '');
-      }
-      if (oshimenPhoto && member) oshimenPhoto.style.backgroundImage = 'url(' + member.photo + ')';
+    // nama lengkap
+    if (oshiProfileFullname) oshiProfileFullname.textContent = userData.oshi;
 
-      // ===== klik kotak oshi -> pindah ke halaman profil member
-      if (oshimenBox && member) {
-        oshimenBox.style.cursor = 'pointer';
-        oshimenBox.title = 'Lihat Profil ' + (member.nickname || member.name);
-        oshimenBox.onclick = function () {
-          window.location.href = member.link;
-        };
-      }
-
-      if (profileBadge) {
-        const badge = member ? teamBadgeColor[member.team] : null;
-        if (badge) {
-          profileBadge.textContent = badge.label;
-          profileBadge.style.background = badge.bg;
-          profileBadge.style.color = badge.text;
-        }
-      }
-    } else {
-      if (oshimenBox) oshimenBox.style.display = 'none';
-      if (profileBadge) {
-        profileBadge.textContent = 'Fan JKT48';
-        profileBadge.style.background = '#FCE4EE';
-        profileBadge.style.color = '#93123F';
-      }
+    // nama panggilan
+    if (oshiProfileNickname) {
+      oshiProfileNickname.textContent = (member && member.nickname) ? 'a.k.a' + member.nickname : '';
     }
 
-    const profileBio = document.getElementById('profileBio');
+    // foto oshi
+    if (oshiProfilePhoto && member) {
+      oshiProfilePhoto.style.backgroundImage = 'url(' + member.photo + ')';
+    }
+
+    // link "lihat profile member"
+    if (oshiProfileLink && member) {
+      oshiProfileLink.href = member.link;
+    }
+
+    // badge team di kartu oshi
+    const badge = member ? teamBadgeColor[member.team] : null;
+    if (badge) {
+      if (oshiProfileBadge) {
+        oshiProfileBadge.textContent = 'Team' + member.team.charAt(0).toUpperCase() + member.team.slice(1);
+        oshiProfileBadge.style.background = badge.bg;
+        oshiProfileBadge.style.color = badge.text;
+      }
+      if (profileBadge) {
+        profileBadge.textContent = badge.label;
+        profileBadge.style.background = badge.bg;
+        profileBadge.style.color = badge.text;
+      }
+    }
+  } else {
+    // belum pilih oshi
+    if (oshiProfileCard) oshiProfileCard.style.display = 'none'
+    if (profileBadge) {
+      profileBadge.textContent = 'Fan JKT48';
+      profileBadge.style.background = '#FCE4EE';
+      profileBadge.style.color = '#93123F';
+    }
+  }
+
     if (profileBio) {
       profileBio.textContent = userData.bio || 'Belum ada bio. Klik "Edit profil" buat nambahin!';
     }
