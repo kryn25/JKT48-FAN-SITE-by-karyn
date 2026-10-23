@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // nama panggilan
     if (oshiProfileNickname) {
-      oshiProfileNickname.textContent = (member && member.nickname) ? 'a.k.a' + member.nickname : '';
+      oshiProfileNickname.textContent = (member && member.nickname) ? 'a.k.a ' + member.nickname : '';
     }
 
     // foto oshi
@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const badge = member ? teamBadgeColor[member.team] : null;
     if (badge) {
       if (oshiProfileBadge) {
-        oshiProfileBadge.textContent = 'Team' + member.team.charAt(0).toUpperCase() + member.team.slice(1);
+        oshiProfileBadge.textContent = 'Team ' + member.team.charAt(0).toUpperCase() + member.team.slice(1);
         oshiProfileBadge.style.background = badge.bg;
         oshiProfileBadge.style.color = badge.text;
       }
@@ -673,9 +673,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return '<div class="oshi-suggestion-item" data-name="' + m.name + '">' +
           '<div class="oshi-suggestion-photo" style="background-image:url(' + m.photo + ')"></div>' +
           '<div>' +
-            '<p class="oshi-suggestion-name">' + m.name + '</p>' +
-            '<p class="oshi-suggestion-team">' + m.name + m.team.charAt(0).toUpperCase() + m.team.slice(1) + '</p>' +
-          '</div>' +
+          '<p class="oshi-suggestion-name">' + (m.nickname || m.name) + '</p>' +
+          '<p class="oshi-suggestion-team">' + m.name + ' · Team ' + m.team.charAt(0).toUpperCase() + m.team.slice(1) + '</p>' +          '</div>' +
         '</div>';
       }).join('');
     }
@@ -1006,8 +1005,8 @@ const memberData = [
     nickname: "Fritzy",
     team: "love",
     birthdate: "07-28",
-    photo: "image/anin.jpg",
-    link: "love/anindya.html", 
+    photo: "image/fritzy.jpg",
+    link: "love/fritzy.html", 
   },
   {
     name: "Grace Octaviani",
@@ -1087,7 +1086,7 @@ const memberData = [
     team: "passion",
     birthdate: "07-26",
     photo: "image/oniel.jpg",
-    link: "passiong/cornelia.html",
+    link: "passion/cornelia.html",
   },
   {
     name: "Dena Natalia",
